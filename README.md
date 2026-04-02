@@ -1,11 +1,13 @@
-[![Validate with hassfest](https://github.com/postlund/dlink_hnap/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/postlund/dlink_hnap/actions/workflows/hassfest.yaml)
-[![HACS Validation](https://github.com/postlund/dlink_hnap/actions/workflows/validate.yaml/badge.svg)](https://github.com/postlund/dlink_hnap/actions/workflows/validate.yaml)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
+[![Validate with hassfest](https://github.com/MichaelB2018/dlink_hnap/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/MichaelB2018/dlink_hnap/actions/workflows/hassfest.yaml)
+[![HACS Validation](https://github.com/MichaelB2018/dlink_hnap/actions/workflows/validate.yaml/badge.svg)](https://github.com/MichaelB2018/dlink_hnap/actions/workflows/validate.yaml)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 # D-Link HNAP
 
 A [Home Assistant](https://www.home-assistant.io/) custom integration for D-Link sensors using the HNAP protocol.
+
+This repository is a community-maintained fork of the original integration. Upstream improvements have not been merged, so releases are published here for users who want the maintained version.
 
 **Key features:**
 
@@ -45,9 +47,11 @@ All entities are associated with a **device** in the Home Assistant device regis
 ### HACS _(preferred method)_
 
 1. Open HACS in your Home Assistant instance
-2. Search for **D-Link HNAP** in the Integrations section
-3. Click **Download**
-4. Restart Home Assistant
+2. Go to **Integrations** and open the three-dot menu
+3. Select **Custom repositories**
+4. Add `https://github.com/MichaelB2018/dlink_hnap` as category **Integration**
+5. Search for **D-Link HNAP** in HACS and click **Download**
+6. Restart Home Assistant
 
 ### Manual install
 
@@ -179,20 +183,20 @@ Version 2.0.0 addresses the following open issues:
 
 | Issue | Description | How it's resolved |
 | ----- | ----------- | ----------------- |
-| [#18](https://github.com/postlund/dlink_hnap/issues/18) | 2025.1.b5 failed to load sensor | Removed deprecated `DEVICE_CLASS_MOTION` / `DEVICE_CLASS_MOISTURE` imports; fully rewritten with modern `BinarySensorDeviceClass` enums |
-| [#21](https://github.com/postlund/dlink_hnap/issues/21) | DLink HNAP issues with HA 2025.2.x | Complete rewrite resolves all compatibility issues with modern Home Assistant |
-| [#12](https://github.com/postlund/dlink_hnap/issues/12) | Excessive errors when device is in power-saving mode | `DataUpdateCoordinator` rate-limits error logging; proper `CannotConnect` → `UpdateFailed` handling avoids log spam; configurable scan interval reduces poll frequency |
-| [#17](https://github.com/postlund/dlink_hnap/issues/17) | No device health / offline indication | `DataUpdateCoordinator` automatically marks entities as **unavailable** when the device can't be reached — standard HA device health pattern |
-| [#20](https://github.com/postlund/dlink_hnap/issues/20) | DCH-S162 not working | Automatic capability detection probes each device's SOAP actions, so any HNAP-compatible device should work. *(Note: The DCH-S162 may use a different protocol — cannot verify without hardware)* |
+| [Upstream #18](https://github.com/postlund/dlink_hnap/issues/18) | 2025.1.b5 failed to load sensor | Removed deprecated `DEVICE_CLASS_MOTION` / `DEVICE_CLASS_MOISTURE` imports; fully rewritten with modern `BinarySensorDeviceClass` enums |
+| [Upstream #21](https://github.com/postlund/dlink_hnap/issues/21) | DLink HNAP issues with HA 2025.2.x | Complete rewrite resolves all compatibility issues with modern Home Assistant |
+| [Upstream #12](https://github.com/postlund/dlink_hnap/issues/12) | Excessive errors when device is in power-saving mode | `DataUpdateCoordinator` rate-limits error logging; proper `CannotConnect` → `UpdateFailed` handling avoids log spam; configurable scan interval reduces poll frequency |
+| [Upstream #17](https://github.com/postlund/dlink_hnap/issues/17) | No device health / offline indication | `DataUpdateCoordinator` automatically marks entities as **unavailable** when the device can't be reached — standard HA device health pattern |
+| [Upstream #20](https://github.com/postlund/dlink_hnap/issues/20) | DCH-S162 not working | Automatic capability detection probes each device's SOAP actions, so any HNAP-compatible device should work. *(Note: The DCH-S162 may use a different protocol — cannot verify without hardware)* |
 
-Not yet addressed: [#11](https://github.com/postlund/dlink_hnap/issues/11) (Battery attribute) — The SOAP action name for battery state is unknown. Contributions from users with battery-powered devices (DCH-S161) are welcome.
+Not yet addressed: [Upstream #11](https://github.com/postlund/dlink_hnap/issues/11) (Battery attribute) — The SOAP action name for battery state is unknown. Contributions from users with battery-powered devices (DCH-S161) are welcome.
 
 ## Credits
 
 - **[Pierre Ståhl](https://github.com/postlund)** — Original author of the integration and HNAP protocol implementation
 - **[Kyle Cackett](https://github.com/kyle-cackett)** — Bug fixes and compatibility updates
 - **[Roger Selwyn](https://github.com/RogerSelwyn)** — Contributions
-- **[MichaelB2018](https://github.com/MichaelB2018)** — v2.0.0: Config flow, SSDP discovery, coordinator, options flow, temperature sensor, diagnostics, and modern HA architecture
+- **[MichaelB2018](https://github.com/MichaelB2018)** — Maintained fork releases, v2.0.0 architecture update, config flow, SSDP discovery, coordinator, options flow, temperature sensor, diagnostics, and modern HA architecture
 
 ## License
 
