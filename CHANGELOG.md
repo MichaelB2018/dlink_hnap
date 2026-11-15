@@ -1,5 +1,10 @@
 # Changelog
 
+**Version 2.0.1**
+
+* Updated HACS and hassfest validation workflows
+* Sorted `manifest.json` keys to satisfy hassfest
+
 **Version 2.0.0**
 
 * Added UI config flow with manual setup and SSDP auto-discovery
