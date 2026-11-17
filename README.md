@@ -1,6 +1,6 @@
 [![Validate with hassfest](https://github.com/MichaelB2018/dlink_hnap/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/MichaelB2018/dlink_hnap/actions/workflows/hassfest.yaml)
 [![HACS Validation](https://github.com/MichaelB2018/dlink_hnap/actions/workflows/validate.yaml/badge.svg)](https://github.com/MichaelB2018/dlink_hnap/actions/workflows/validate.yaml)
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 # D-Link HNAP
@@ -44,23 +44,88 @@ All entities are associated with a **device** in the Home Assistant device regis
 
 ## Installation
 
-### HACS _(preferred method)_
+**Requirements:** Home Assistant **2024.4.0** or newer.
 
-1. Open HACS in your Home Assistant instance
-2. Go to **Integrations** and open the three-dot menu
-3. Select **Custom repositories**
-4. Add `https://github.com/MichaelB2018/dlink_hnap` as category **Integration**
-5. Search for **D-Link HNAP** in HACS and click **Download**
-6. Restart Home Assistant
+Pick the method that matches your Home Assistant version:
 
-### Manual install
+| Your Home Assistant version | Recommended method |
+| --------------------------- | ------------------ |
+| **2026.11 or newer** | [Option 1: Home Assistant Marketplace](#option-1-home-assistant-marketplace-202611-and-newer) (built in, nothing extra to install) |
+| **2024.4 – 2026.10** with HACS installed | [Option 2: HACS](#option-2-hacs-before-202611) |
+| Any supported version, without HACS or Marketplace | [Option 3: Manual installation](#option-3-manual-installation) |
 
-1. Copy the `custom_components/dlink_hnap` folder into your Home Assistant `config/custom_components/` directory
-2. Restart Home Assistant
+> **Switching from the original `postlund/dlink_hnap`?** Both use the same `dlink_hnap` domain, so only one can be installed at a time. Uninstall the original first (in HACS/Marketplace, or by deleting `config/custom_components/dlink_hnap`), then install this version using one of the options below and restart Home Assistant. Your existing YAML configuration is [migrated automatically](#legacy-yaml-configuration-deprecated).
+
+### Option 1: Home Assistant Marketplace (2026.11 and newer)
+
+Starting with Home Assistant 2026.11, HACS is built into Home Assistant as the **Marketplace**. The quickest way is to click this button:
+
+[![Open your Home Assistant instance and open this repository in the Marketplace.](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=MichaelB2018&repository=dlink_hnap&category=integration)
+
+Or install it step by step:
+
+1. In Home Assistant, go to **Settings** → **Marketplace**.
+2. The first time you open the Marketplace, read the notice and select **I understand the risks and agree**.
+3. Search for **D-Link HNAP**.
+   - **Not listed?** Select **Add from link** in the upper-right corner, enter `MichaelB2018/dlink_hnap` (or `https://github.com/MichaelB2018/dlink_hnap`), and select **Add**. If the Marketplace asks for the type, choose **Integration** and select **Add** again.
+   - Adding a repository from a link requires a one-time GitHub connection. The Marketplace uses GitHub device sign-in, so you approve it on GitHub without entering your password in Home Assistant.
+4. Open the **D-Link HNAP** page and select **Install**.
+5. You land straight in the setup flow — **no restart needed** for a new installation. Continue with [Configuration](#configuration).
+
+**Updates:** new releases appear under **Settings** → **Updates**, next to Home Assistant's own updates. After updating, a repair notification tells you when a restart is needed and can restart Home Assistant for you.
+
+> **Already installed via HACS?** There is nothing to do. When you upgrade to 2026.11, Home Assistant migrates HACS to the Marketplace automatically, and D-Link HNAP stays installed and keeps receiving updates.
+
+### Option 2: HACS (before 2026.11)
+
+If you run Home Assistant older than 2026.11 and have [HACS](https://hacs.xyz/docs/use/) installed, click this button to open the repository directly in HACS:
+
+[![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=MichaelB2018&repository=dlink_hnap&category=integration)
+
+Or install it step by step:
+
+1. Open **HACS** from the Home Assistant sidebar.
+2. Select the three-dot menu (⋮) in the upper-right corner → **Custom repositories**.
+3. Enter `https://github.com/MichaelB2018/dlink_hnap` as the **Repository**, choose **Integration** as the **Type**, and select **Add**. Close the dialog.
+4. Search for **D-Link HNAP**, open it, and select **Download** (bottom right). Confirm the latest version and select **Download** again.
+5. Restart Home Assistant: **Settings** → **System** → three-dot menu (⋮) → **Restart Home Assistant**.
+6. Continue with [Configuration](#configuration).
+
+**Updates:** HACS shows an update entity for D-Link HNAP under **Settings** → **Updates** when a new release is available. Install it and restart Home Assistant.
+
+### Option 3: Manual installation
+
+Use this if you don't use the Marketplace or HACS. You'll need access to your Home Assistant configuration folder, for example via the Samba share, SSH, or the Studio Code Server / File editor app.
+
+1. Download the latest release from the [releases page](https://github.com/MichaelB2018/dlink_hnap/releases/latest) — under **Assets**, choose **Source code (zip)**.
+2. Extract the archive.
+3. Copy the `custom_components/dlink_hnap` folder into the `custom_components` folder of your Home Assistant configuration directory (the folder that contains `configuration.yaml`). Create `custom_components` if it doesn't exist yet. The result should look like this:
+
+   ```text
+   config/
+   ├── configuration.yaml
+   └── custom_components/
+       └── dlink_hnap/
+           ├── __init__.py
+           ├── manifest.json
+           ├── brand/
+           └── ...
+   ```
+
+4. Restart Home Assistant: **Settings** → **System** → three-dot menu (⋮) → **Restart Home Assistant**.
+5. Continue with [Configuration](#configuration).
+
+**Updates:** manual installations don't get update notifications. To update, watch the [releases page](https://github.com/MichaelB2018/dlink_hnap/releases), replace the `custom_components/dlink_hnap` folder with the new version, and restart Home Assistant.
 
 ## Configuration
 
 ### UI Setup (recommended)
+
+If you installed through the Marketplace, the setup flow opens automatically after you select **Install**. Otherwise, click this button:
+
+[![Open your Home Assistant instance and start setting up D-Link HNAP.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=dlink_hnap)
+
+Or set it up manually:
 
 1. In Home Assistant, go to **Settings** → **Devices & Services**
 2. Click **+ Add Integration** (bottom right)
