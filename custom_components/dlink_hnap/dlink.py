@@ -72,15 +72,9 @@ class HNAPClient:
         challenge = resp["Challenge"]
         public_key = resp["PublicKey"]
         self._cookie = resp["Cookie"]
-        _LOGGER.debug(
-            "Challenge: %s, Public key: %s, Cookie: %s",
-            challenge,
-            public_key,
-            self._cookie,
-        )
+        _LOGGER.debug("Received login challenge from device")
 
         self._private_key = _hmac(public_key + str(self.password), challenge)
-        _LOGGER.debug("Private key: %s", self._private_key)
 
         try:
             password = _hmac(self._private_key, challenge)
@@ -102,6 +96,7 @@ class HNAPClient:
             raise AuthenticationError("Bad response from device") from err
 
         self.logged_in = True
+        _LOGGER.debug("Login to device successful")
 
     async def _fetch_device_actions(self) -> list[str]:
         """Fetch supported SOAP actions from device."""
@@ -152,12 +147,7 @@ class HNAPClient:
             self._private_key,
             '{0}"{1}{2}"'.format(self._timestamp, ACTION_BASE_URL, action),
         )
-        _LOGGER.debug(
-            "Generated new token for %s: %s (time: %d)",
-            action,
-            self._auth_token,
-            self._timestamp,
-        )
+        _LOGGER.debug("Refreshed HNAP auth token for %s", action)
 
     def _get_soap_client(self) -> NanoSOAPClient:
         """Get SOAP client with updated headers."""

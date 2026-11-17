@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any
 
 import voluptuous as vol
@@ -46,6 +47,12 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 STEP_CREDENTIALS_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_USERNAME, default=DEFAULT_USERNAME): str,
+        vol.Required(CONF_PASSWORD): str,
+    }
+)
+
+STEP_REAUTH_DATA_SCHEMA = vol.Schema(
+    {
         vol.Required(CONF_PASSWORD): str,
     }
 )
@@ -175,6 +182,47 @@ class DLinkHNAPConfigFlow(ConfigFlow, domain=DOMAIN):
     ) -> FlowResult:
         """Handle import from YAML configuration."""
         return await self.async_step_user(import_data)
+
+    async def async_step_reauth(
+        self, entry_data: Mapping[str, Any]
+    ) -> FlowResult:
+        """Handle re-authentication when the device rejects the stored PIN."""
+        return await self.async_step_reauth_confirm()
+
+    async def async_step_reauth_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Ask for the new password and validate it."""
+        errors: dict[str, str] = {}
+        reauth_entry = self._get_reauth_entry()
+
+        if user_input is not None:
+            try:
+                await self._async_validate_input(
+                    {**reauth_entry.data, CONF_PASSWORD: user_input[CONF_PASSWORD]}
+                )
+            except CannotConnect:
+                errors["base"] = "cannot_connect"
+            except AuthenticationError:
+                errors["base"] = "invalid_auth"
+            except Exception:
+                _LOGGER.exception("Unexpected exception during re-authentication")
+                errors["base"] = "unknown"
+            else:
+                return self.async_update_reload_and_abort(
+                    reauth_entry,
+                    data_updates={CONF_PASSWORD: user_input[CONF_PASSWORD]},
+                )
+
+        return self.async_show_form(
+            step_id="reauth_confirm",
+            data_schema=STEP_REAUTH_DATA_SCHEMA,
+            errors=errors,
+            description_placeholders={
+                "name": reauth_entry.title,
+                "host": reauth_entry.data[CONF_HOST],
+            },
+        )
 
     async def _async_validate_input(
         self, data: dict[str, Any]

@@ -1,5 +1,11 @@
 # Changelog
 
+**Version 2.0.3**
+
+* Added a re-authentication flow: when the device rejects the stored PIN, Home Assistant now asks for the new PIN instead of requiring the integration to be deleted and re-added
+* Stopped logging session secrets (login challenge, public key, session cookie, private key, and HNAP auth token) at debug level
+* Bumped minimum Home Assistant version to 2024.11.0
+
 **Version 2.0.2**
 
 * Added brand assets (`brand/icon.png`, `brand/icon@2x.png`, `brand/logo.png`, `brand/logo@2x.png`) so the integration shows its icon in Home Assistant

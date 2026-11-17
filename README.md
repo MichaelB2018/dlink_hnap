@@ -44,14 +44,14 @@ All entities are associated with a **device** in the Home Assistant device regis
 
 ## Installation
 
-**Requirements:** Home Assistant **2024.4.0** or newer.
+**Requirements:** Home Assistant **2024.11.0** or newer.
 
 Pick the method that matches your Home Assistant version:
 
 | Your Home Assistant version | Recommended method |
 | --------------------------- | ------------------ |
 | **2026.11 or newer** | [Option 1: Home Assistant Marketplace](#option-1-home-assistant-marketplace-202611-and-newer) (built in, nothing extra to install) |
-| **2024.4 – 2026.10** with HACS installed | [Option 2: HACS](#option-2-hacs-before-202611) |
+| **2024.11 – 2026.10** with HACS installed | [Option 2: HACS](#option-2-hacs-before-202611) |
 | Any supported version, without HACS or Marketplace | [Option 3: Manual installation](#option-3-manual-installation) |
 
 > **Switching from the original `postlund/dlink_hnap`?** Both use the same `dlink_hnap` domain, so only one can be installed at a time. Uninstall the original first (in HACS/Marketplace, or by deleting `config/custom_components/dlink_hnap`), then install this version using one of the options below and restart Home Assistant. Your existing YAML configuration is [migrated automatically](#legacy-yaml-configuration-deprecated).
@@ -168,6 +168,10 @@ After a device is configured, you can adjust settings without restarting:
 
 4. Click **Submit** — changes take effect immediately (the integration reloads automatically)
 
+### Re-authentication
+
+If the device stops accepting the stored PIN code (for example after a factory reset), Home Assistant shows **Authentication expired** for the D-Link device under **Settings** → **Devices & Services**. Select **Reconfigure**, enter the current PIN code from the device label, and select **Submit**. The integration verifies the PIN, saves it, and reloads, without needing to delete and re-add the device.
+
 ## Legacy YAML Configuration *(deprecated)*
 
 > ⚠️ **YAML configuration is deprecated and will be removed in a future version.**
@@ -227,6 +231,7 @@ The diagnostics file includes:
 | ------- | -------- |
 | **"Failed to connect"** during setup | Verify the IP address is correct and the device is powered on and reachable. Try pinging the device. |
 | **"Invalid username or password"** | The password is the numeric PIN code on the device label, not a user-chosen password. Username is almost always `Admin`. |
+| **"Authentication expired"** | The device no longer accepts the stored PIN. Follow the [re-authentication](#re-authentication) steps to enter the current PIN. |
 | **Entities not appearing** | The integration only creates entities for capabilities the device reports. Check diagnostics to see detected capabilities. |
 | **Motion sensor stuck on** | Increase the motion timeout in Options. The sensor turns `off` only after no motion is detected for the configured timeout period. |
 | **Stale data / slow updates** | Decrease the scan interval in Options (minimum 5 seconds). Note that very low values increase network traffic. |
