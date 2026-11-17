@@ -4,6 +4,7 @@
 
 * Added brand assets (`brand/icon.png`, `brand/icon@2x.png`, `brand/logo.png`, `brand/logo@2x.png`) so the integration shows its icon in Home Assistant
 * Expanded README installation instructions for the Home Assistant Marketplace (2026.11+), HACS, and manual installation
+* Added Marketplace `categories` to `manifest.json`
 
 **Version 2.0.1**
 

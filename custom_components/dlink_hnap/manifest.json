@@ -1,6 +1,10 @@
 {
     "domain": "dlink_hnap",
     "name": "D-Link HNAP",
+    "categories": [
+        "sensors.motion_presence",
+        "water.meters_leak_detection"
+    ],
     "codeowners": [
         "@MichaelB2018"
     ],
